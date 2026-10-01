@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Đăng báo cáo — Finwealth</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .admin-wrap { max-width: 640px; margin: 0 auto; padding: 56px 24px 96px; }
+  .admin-card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 32px; margin-bottom: 32px; }
+  .admin-card h2 { font-size: 20px; margin-bottom: 20px; }
+  .admin-field { margin-bottom: 18px; }
+  .admin-field label { display: block; font-size: 13.5px; font-weight: 600; color: var(--emerald); margin-bottom: 6px; }
+  .admin-field input[type=text], .admin-field input[type=date], .admin-field input[type=password], .admin-field textarea {
+    width: 100%; font-family: var(--font-sans); font-size: 15px; padding: 12px 14px;
+    border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface);
+  }
+  .admin-field textarea { min-height: 80px; resize: vertical; }
+  .admin-msg { margin-top: 14px; font-size: 14px; padding: 12px 14px; border-radius: var(--radius); display: none; }
+  .admin-msg.ok { display: block; background: #E6F2EC; color: var(--emerald-dark); }
+  .admin-msg.err { display: block; background: #FBEAEA; color: #a33; }
+  .admin-list-row {
+    display: grid; grid-template-columns: 100px 1fr auto; gap: 14px; align-items: start;
+    padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 14px;
+  }
+  .admin-list-row:last-child { border-bottom: none; }
+  .admin-list-row .d { font-weight: 600; color: var(--emerald); font-family: var(--font-serif); }
+  .admin-list-row .t { font-weight: 600; }
+  .admin-list-row .s { color: var(--gray); font-size: 13px; margin-top: 3px; }
+  .admin-list-row button {
+    font-size: 13px; font-weight: 600; color: #a33; background: none; border: 1px solid #eecccc;
+    border-radius: var(--radius); padding: 6px 12px; cursor: pointer;
+  }
+  .admin-list-row button:hover { background: #FBEAEA; }
+  .admin-locked { text-align: center; padding: 60px 24px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <img src="assets/logo-mark.svg" alt="Finwealth">
+      <span>Finwealth</span>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html">Trang chủ</a>
+      <a href="about.html">Giới thiệu</a>
+      <a href="reports.html">Báo cáo ngày</a>
+      <a href="contact.html">Liên hệ</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Mở menu"><span></span></button>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Nội bộ — Team Insight</span>
+    <h1>Đăng báo cáo ngày</h1>
+    <p>Trang này dùng để tải lên báo cáo thị trường hằng ngày. Không công khai liên kết trang này ra ngoài.</p>
+  </div>
+</div>
+
+<div class="admin-wrap">
+
+  <div id="lockedView" class="admin-card admin-locked">
+    <div class="admin-field" style="text-align:left; max-width:320px; margin:0 auto;">
+      <label for="passwordInput">Mật khẩu quản trị</label>
+      <input type="password" id="passwordInput" placeholder="Nhập mật khẩu">
+    </div>
+    <button class="btn btn-primary" id="unlockBtn" style="margin-top:8px;">Mở khoá</button>
+    <p id="lockMsg" class="admin-msg"></p>
+  </div>
+
+  <div id="unlockedView" hidden>
+    <div class="admin-card">
+      <h2>Tải lên báo cáo mới</h2>
+      <form id="uploadForm">
+        <div class="admin-field">
+          <label for="date">Ngày báo cáo</label>
+          <input type="date" id="date" required>
+        </div>
+        <div class="admin-field">
+          <label for="title">Tiêu đề</label>
+          <input type="text" id="title" placeholder="VD: Điểm tin thị trường phiên 16/09/2026" required>
+        </div>
+        <div class="admin-field">
+          <label for="summary">Tóm tắt ngắn (1-2 câu)</label>
+          <textarea id="summary" placeholder="Tóm tắt nội dung chính của báo cáo..."></textarea>
+        </div>
+        <div class="admin-field">
+          <label for="file">File PDF (tối đa ~3MB)</label>
+          <input type="file" id="file" accept="application/pdf" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="submitBtn">Tải lên</button>
+        <p id="uploadMsg" class="admin-msg"></p>
+      </form>
+    </div>
+
+    <div class="admin-card">
+      <h2>Báo cáo đã đăng</h2>
+      <div id="reportsAdminList">Đang tải...</div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Công ty TNHH Finwealth. Bảo lưu mọi quyền.</span>
+      <span>finwealthvietnam.com</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+let ADMIN_PASSWORD = "";
+
+document.addEventListener("DOMContentLoaded", () => {
+  const lockedView = document.getElementById("lockedView");
+  const unlockedView = document.getElementById("unlockedView");
+  const passwordInput = document.getElementById("passwordInput");
+  const lockMsg = document.getElementById("lockMsg");
+
+  document.getElementById("unlockBtn").addEventListener("click", async () => {
+    const pwd = passwordInput.value.trim();
+    if (!pwd) return;
+    ADMIN_PASSWORD = pwd;
+    lockMsg.style.display = "none";
+    lockedView.hidden = true;
+    unlockedView.hidden = false;
+    loadReports();
+  });
+
+  passwordInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") document.getElementById("unlockBtn").click();
+  });
+
+  document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const submitBtn = document.getElementById("submitBtn");
+    const msg = document.getElementById("uploadMsg");
+    const fileInput = document.getElementById("file");
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Đang tải lên...";
+    msg.style.display = "none";
+
+    try {
+      const fileBase64 = await fileToBase64(file);
+      const res = await fetch("/api/upload-report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          password: ADMIN_PASSWORD,
+          date: document.getElementById("date").value,
+          title: document.getElementById("title").value,
+          summary: document.getElementById("summary").value,
+          fileBase64,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Lỗi không xác định");
+
+      msg.className = "admin-msg ok";
+      msg.textContent = "Đã đăng báo cáo thành công!";
+      msg.style.display = "block";
+      document.getElementById("uploadForm").reset();
+      renderAdminList(data.reports);
+    } catch (err) {
+      msg.className = "admin-msg err";
+      msg.textContent = "Lỗi: " + err.message;
+      msg.style.display = "block";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Tải lên";
+    }
+  });
+});
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(",")[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function loadReports() {
+  try {
+    const res = await fetch("/api/reports");
+    const list = await res.json();
+    renderAdminList(list);
+  } catch (err) {
+    document.getElementById("reportsAdminList").textContent = "Không tải được danh sách.";
+  }
+}
+
+function renderAdminList(list) {
+  const el = document.getElementById("reportsAdminList");
+  if (!list || list.length === 0) {
+    el.innerHTML = "<p style='color:var(--gray);'>Chưa có báo cáo nào.</p>";
+    return;
+  }
+  const sorted = [...list].sort((a, b) => b.date.localeCompare(a.date));
+  el.innerHTML = sorted.map(reportAdminRow).join("");
+  el.querySelectorAll("[data-delete]").forEach((btn) => {
+    btn.addEventListener("click", () => deleteReport(btn.dataset.delete));
+  });
+}
+
+function reportAdminRow(r) {
+  const [y, m, d] = r.date.split("-");
+  return `
+    <div class="admin-list-row">
+      <div class="d">${d}/${m}/${y}</div>
+      <div>
+        <div class="t">${r.title}</div>
+        <div class="s">${r.summary || ""}</div>
+      </div>
+      <button data-delete="${encodeURIComponent(r.file)}">Xoá</button>
+    </div>`;
+}
+
+async function deleteReport(encodedFile) {
+  if (!confirm("Xoá báo cáo này?")) return;
+  const file = decodeURIComponent(encodedFile);
+  try {
+    const res = await fetch("/api/delete-report", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: ADMIN_PASSWORD, file }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Lỗi không xác định");
+    renderAdminList(data.reports);
+  } catch (err) {
+    alert("Lỗi: " + err.message);
+  }
+}
+</script>
+</body>
+</html>

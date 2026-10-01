@@ -1,0 +1,43 @@
+// Vercel serverless function — POST /api/upload-report
+// Body (JSON): { password, date, title, summary, fileBase64 }
+// fileBase64 is the PDF content encoded as base64 (no data: prefix).
+// Protected by ADMIN_PASSWORD env var — set this in Vercel project settings
+// before going live (Settings -> Environment Variables).
+const { addReport } = require("../lib/reportsStore.blob");
+
+const MAX_BYTES = 4 * 1024 * 1024; // keep comfortably under Vercel's 4.5MB body limit
+
+module.exports = async (req, res) => {
+  if (req.method !== "POST") {
+    res.status(405).json({ error: "Method not allowed" });
+    return;
+  }
+
+  const { password, date, title, summary, fileBase64 } = req.body || {};
+
+  if (!process.env.ADMIN_PASSWORD) {
+    res.status(500).json({ error: "Server chưa cấu hình ADMIN_PASSWORD — xem README.md." });
+    return;
+  }
+  if (password !== process.env.ADMIN_PASSWORD) {
+    res.status(401).json({ error: "Sai mật khẩu." });
+    return;
+  }
+  if (!date || !title || !fileBase64) {
+    res.status(400).json({ error: "Thiếu ngày, tiêu đề hoặc file PDF." });
+    return;
+  }
+
+  const fileBuffer = Buffer.from(fileBase64, "base64");
+  if (fileBuffer.length > MAX_BYTES) {
+    res.status(413).json({ error: `File quá lớn (tối đa ${MAX_BYTES / 1024 / 1024}MB).` });
+    return;
+  }
+
+  try {
+    const list = await addReport({ date, title, summary: summary || "", fileBuffer });
+    res.status(200).json({ ok: true, reports: list });
+  } catch (err) {
+    res.status(500).json({ error: "Upload thất bại", detail: String(err) });
+  }
+};

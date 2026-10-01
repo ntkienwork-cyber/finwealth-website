@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Báo cáo ngày — Finwealth</title>
+<meta name="description" content="Kho báo cáo nhận định thị trường chứng khoán hằng ngày từ Finwealth.">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <img src="assets/logo-mark.svg" alt="Finwealth">
+      <span>Finwealth</span>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html">Trang chủ</a>
+      <a href="about.html">Giới thiệu</a>
+      <a href="reports.html" class="is-active">Báo cáo ngày</a>
+      <a href="contact.html">Liên hệ</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="https://zalo.me/2281375231434746508" target="_blank" rel="noopener" class="btn btn-gold">Chat Zalo OA</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Mở menu"><span></span></button>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Báo cáo ngày</span>
+    <h1>Cập nhật thị trường mỗi ngày</h1>
+    <p>Báo cáo tổng hợp diễn biến thị trường tài chính, chứng khoán từ Finwealth. Tải PDF để xem chi tiết.</p>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <div class="reports-toolbar">
+      <div class="reports-filters">
+        <input type="search" id="searchInput" placeholder="Tìm theo tiêu đề...">
+        <select id="monthFilter">
+          <option value="">Tất cả các tháng</option>
+        </select>
+      </div>
+    </div>
+    <div id="reportsList" class="reports-list"></div>
+    <div id="reportsEmpty" class="reports-empty" hidden>Không tìm thấy báo cáo phù hợp.</div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <img src="assets/logo-mark-white.svg" alt="">
+          <span>Finwealth</span>
+        </div>
+        <p style="max-width:320px; color:rgba(251,251,248,0.6); font-size:14.5px;">Công ty TNHH Finwealth — Cổng thông tin cập nhật thị trường tài chính, chứng khoán Việt Nam mỗi ngày.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Điều hướng</h4>
+        <ul>
+          <li><a href="index.html">Trang chủ</a></li>
+          <li><a href="about.html">Giới thiệu</a></li>
+          <li><a href="reports.html">Báo cáo ngày</a></li>
+          <li><a href="contact.html">Liên hệ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Kết nối</h4>
+        <ul>
+          <li><a href="https://zalo.me/2281375231434746508" target="_blank" rel="noopener">Zalo OA</a></li>
+          <li><a href="#">[ Facebook ]</a></li>
+          <li><a href="#">[ LinkedIn ]</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="disclaimer">Khuyến cáo: Nội dung báo cáo trên website này chỉ nhằm mục đích cung cấp thông tin tham khảo, không phải là khuyến nghị mua/bán chứng khoán hay lời khuyên đầu tư mang tính cá nhân hóa. Nhà đầu tư cần cân nhắc kỹ và chịu trách nhiệm với quyết định đầu tư của mình.</p>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Công ty TNHH Finwealth. Bảo lưu mọi quyền.</span>
+      <span>finwealthvietnam.com</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/reports.js"></script>
+</body>
+</html>

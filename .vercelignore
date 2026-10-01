@@ -1,0 +1,7 @@
+# These files are only used for local development (node server.js).
+# Excluding them keeps Vercel on its default static-site + api/ functions
+# behavior instead of treating server.js as a Node.js server entrypoint.
+server.js
+lib/reportsStore.local.js
+data/
+reports/

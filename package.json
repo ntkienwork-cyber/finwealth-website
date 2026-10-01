@@ -1,0 +1,12 @@
+{
+  "name": "finwealth-website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Cong thong tin thi truong tai chinh Finwealth",
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.8.0"
+  }
+}
