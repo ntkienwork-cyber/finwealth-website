@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("tin-tuc").hidden = false;
       document.getElementById("jumpNews").hidden = false;
       document.getElementById("companyNewsGrid").innerHTML = companyNews
-        .map((item, i) => renderNewsItem(item, i + 1))
+        .map(renderNewsItem)
         .join("");
     }
 
@@ -119,14 +119,11 @@ function copyViaHiddenTextarea(text) {
   }
 }
 
-function renderNewsItem(item, index) {
+function renderNewsItem(item) {
   return `
     <div class="company-news-item">
       <span class="ticker-badge">${escapeHtml(item.ticker || "")}</span>
-      <div>
-        <span class="news-index">Tin ${index}</span>
-        <p>${escapeHtml(item.text || "")}</p>
-      </div>
+      <p>${escapeHtml(item.text || "")}</p>
     </div>`;
 }
 
