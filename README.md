@@ -117,10 +117,9 @@ ADMIN_PASSWORD="mat-khau-cua-ban" node server.js
 - [ ] Sau khi deploy lần đầu, danh sách báo cáo sẽ trống — dùng `/admin.html` để đăng báo cáo đầu tiên (3 mục mẫu hiện tại chỉ tồn tại khi chạy local).
 
 ### 3. Kết nối form liên hệ
-Form ở `contact.html` đã nối tới Web3Forms (gửi về kiennt@finwealthvietnam.com), xử lý tại `js/main.js`.
-- [ ] Vào https://web3forms.com, nhập email kiennt@finwealthvietnam.com, xác nhận qua link trong email để lấy Access Key.
-- [ ] Mở `contact.html`, tìm dòng `<input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">` và thay `YOUR_WEB3FORMS_ACCESS_KEY` bằng key thật, rồi deploy lại.
+Form ở `contact.html` đã nối tới Web3Forms (gửi về kiennt@finwealthvietnam.com), xử lý tại `js/main.js`. Access Key thật đã được gắn vào `contact.html`.
 - Access Key của Web3Forms được thiết kế để đặt công khai trong HTML (giống site key reCAPTCHA) — không phải bí mật cần giấu.
+- Nếu cần đổi email nhận hoặc lấy Access Key mới: vào https://web3forms.com, nhập email, xác nhận qua link trong email, rồi thay giá trị `access_key` trong `contact.html`.
 
 ### 4. Domain & DNS — finwealthvietnam.com
 - [ ] Trỏ domain về Vercel/Netlify (thường qua CNAME hoặc A record theo hướng dẫn của nhà cung cấp)
