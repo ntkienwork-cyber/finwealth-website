@@ -79,17 +79,25 @@ const server = http.createServer(async (req, res) => {
 
   if (url.pathname === "/api/upload-report" && req.method === "POST") {
     try {
-      const { password, date, title, summary, fileBase64 } = await readJsonBody(req);
+      const { password, date, title, summary, fileBase64, companyNews, marketOutlook, liveUpdates } = await readJsonBody(req);
       if (password !== ADMIN_PASSWORD) {
         sendJson(res, 401, { error: "Sai mật khẩu." });
         return;
       }
-      if (!date || !title || !fileBase64) {
-        sendJson(res, 400, { error: "Thiếu ngày, tiêu đề hoặc file PDF." });
+      if (!date || !title) {
+        sendJson(res, 400, { error: "Thiếu ngày hoặc tiêu đề." });
         return;
       }
-      const fileBuffer = Buffer.from(fileBase64, "base64");
-      const list = reportsStore.addReport({ date, title, summary: summary || "", fileBuffer });
+      const fileBuffer = fileBase64 ? Buffer.from(fileBase64, "base64") : null;
+      const list = reportsStore.addReport({
+        date,
+        title,
+        summary: summary || "",
+        fileBuffer,
+        companyNews: companyNews || [],
+        marketOutlook: marketOutlook || [],
+        liveUpdates: liveUpdates || [],
+      });
       sendJson(res, 200, { ok: true, reports: list });
     } catch (err) {
       sendJson(res, 500, { error: "Upload thất bại", detail: String(err) });
@@ -99,12 +107,12 @@ const server = http.createServer(async (req, res) => {
 
   if (url.pathname === "/api/delete-report" && req.method === "POST") {
     try {
-      const { password, file } = await readJsonBody(req);
+      const { password, date } = await readJsonBody(req);
       if (password !== ADMIN_PASSWORD) {
         sendJson(res, 401, { error: "Sai mật khẩu." });
         return;
       }
-      const list = reportsStore.deleteReport(file);
+      const list = reportsStore.deleteReport(date);
       sendJson(res, 200, { ok: true, reports: list });
     } catch (err) {
       sendJson(res, 500, { error: "Xoá thất bại", detail: String(err) });

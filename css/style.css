@@ -191,17 +191,112 @@ section { padding: 96px 0; }
 }
 .report-row:hover { background: rgba(127,165,145,0.14); }
 .report-row .date { font-family: var(--font-serif); color: var(--emerald); font-weight: 600; font-size: 15px; }
+.report-row-main { display: block; }
 .report-row .title { font-weight: 600; font-size: 15.5px; }
+.report-row-main:hover .title { color: var(--emerald); text-decoration: underline; }
 .report-row .summary { color: var(--gray); font-size: 14px; margin-top: 4px; }
+.report-row-actions { display: flex; align-items: center; gap: 10px; }
 .report-row .dl {
   display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600;
   color: var(--emerald); border: 1px solid var(--line); padding: 9px 16px; border-radius: var(--radius);
   white-space: nowrap;
 }
 .report-row .dl:hover { background: var(--emerald); color: var(--bg); border-color: var(--emerald); }
+.report-row .dl-pdf {
+  font-size: 13px; font-weight: 600; color: var(--gray); white-space: nowrap;
+}
+.report-row .dl-pdf:hover { color: var(--emerald); text-decoration: underline; }
 .reports-empty { text-align: center; padding: 60px 20px; color: var(--gray); }
 .reports-teaser-note {
   font-size: 14px; color: var(--gray); text-align: center; margin-top: 28px;
+}
+
+/* ==========================================================================
+   Report detail (single-day report: company news + market outlook + live feed)
+   ========================================================================== */
+.back-link {
+  display: inline-block; font-size: 13.5px; font-weight: 600; color: var(--gold);
+  margin-bottom: 18px;
+}
+.back-link:hover { text-decoration: underline; }
+
+.report-jump {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  padding: 24px 24px; border-bottom: 1px solid var(--line);
+}
+.jump-pill {
+  display: inline-flex; align-items: center; font-size: 13.5px; font-weight: 600;
+  color: var(--emerald); border: 1px solid var(--line); padding: 8px 16px;
+  border-radius: 999px; background: var(--surface); transition: all 0.2s ease;
+  font-family: var(--font-sans); cursor: pointer;
+}
+.jump-pill:hover { background: var(--platinum); border-color: var(--sage); }
+.jump-pill-action { margin-left: auto; color: var(--gray); }
+
+.company-news-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px;
+}
+.company-news-item {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+  padding: 20px; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.company-news-item:hover {
+  transform: translateY(-3px); box-shadow: 0 14px 30px rgba(12,61,48,0.08); border-color: var(--sage);
+}
+.ticker-badge {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  min-width: 56px; height: 32px; padding: 0 10px;
+  background: var(--emerald); color: var(--bg); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.02em; border-radius: 6px; font-family: var(--font-serif);
+}
+.news-index {
+  display: block; font-size: 11px; font-weight: 700; color: var(--gold);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;
+}
+.company-news-item p { margin: 0; font-size: 14.5px; color: var(--ink); line-height: 1.6; }
+
+.market-outlook { max-width: 760px; }
+.market-outlook p {
+  font-size: 16.5px; line-height: 1.85; color: rgba(251,251,248,0.82); margin-bottom: 1.3em;
+}
+.market-outlook .hl { color: var(--gold); font-weight: 700; }
+.outlook-disclaimer {
+  max-width: 760px; font-size: 13px; color: rgba(251,251,248,0.5);
+  border-top: 1px solid rgba(251,251,248,0.15); padding-top: 20px; margin-top: 8px;
+}
+
+.live-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-sans); font-size: 13px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
+}
+.live-dot {
+  width: 9px; height: 9px; border-radius: 50%; background: var(--market-up);
+  box-shadow: 0 0 0 0 rgba(27,122,77,0.5); animation: livePulse 1.8s ease-out infinite;
+}
+@keyframes livePulse {
+  0% { box-shadow: 0 0 0 0 rgba(27,122,77,0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(27,122,77,0); }
+  100% { box-shadow: 0 0 0 0 rgba(27,122,77,0); }
+}
+.live-feed {
+  list-style: none; margin: 0; padding: 0; max-width: 760px;
+  border-left: 2px solid var(--line);
+}
+.live-feed li {
+  position: relative; padding: 2px 0 22px 26px; font-size: 15px; color: var(--ink); line-height: 1.7;
+}
+.live-feed li::before {
+  content: ""; position: absolute; left: -7px; top: 6px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--surface); border: 2px solid var(--gold);
+}
+.live-feed li:last-child { padding-bottom: 2px; }
+.live-feed .hl { color: var(--emerald); font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot { animation: none; }
 }
 
 /* ==========================================================================
@@ -438,9 +533,11 @@ section { padding: 96px 0; }
   .contact-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; gap: 28px; }
   .report-row { grid-template-columns: 1fr; }
-  .report-row .dl { justify-self: start; }
+  .report-row-actions { justify-self: start; }
   .home-layout { grid-template-columns: 1fr; }
   .board-sidebar { position: static; order: -1; }
+  .company-news-grid { grid-template-columns: 1fr; }
+  .jump-pill-action { margin-left: 0; }
 }
 @media (max-width: 760px) {
   .main-nav { position: fixed; top: 76px; right: 0; left: 0; height: calc(100vh - 76px); background: var(--bg); flex-direction: column;

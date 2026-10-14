@@ -1,5 +1,5 @@
 // Vercel serverless function — POST /api/delete-report
-// Body (JSON): { password, file } — file is the report's blob URL (as shown in /api/reports)
+// Body (JSON): { password, date } — date is the report's date (YYYY-MM-DD, as shown in /api/reports)
 const { deleteReport } = require("../lib/reportsStore.blob");
 
 module.exports = async (req, res) => {
@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const { password, file } = req.body || {};
+  const { password, date } = req.body || {};
 
   if (!process.env.ADMIN_PASSWORD) {
     res.status(500).json({ error: "Server chưa cấu hình ADMIN_PASSWORD — xem README.md." });
@@ -18,13 +18,13 @@ module.exports = async (req, res) => {
     res.status(401).json({ error: "Sai mật khẩu." });
     return;
   }
-  if (!file) {
-    res.status(400).json({ error: "Thiếu thông tin file cần xoá." });
+  if (!date) {
+    res.status(400).json({ error: "Thiếu ngày báo cáo cần xoá." });
     return;
   }
 
   try {
-    const list = await deleteReport(file);
+    const list = await deleteReport(date);
     res.status(200).json({ ok: true, reports: list });
   } catch (err) {
     res.status(500).json({ error: "Xoá thất bại", detail: String(err) });

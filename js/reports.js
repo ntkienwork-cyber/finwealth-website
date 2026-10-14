@@ -63,13 +63,20 @@ function formatDate(iso) {
 }
 
 function renderReportRow(r) {
+  const detailHref = `report.html?d=${encodeURIComponent(r.date)}`;
+  const pdfLink = r.file
+    ? `<a class="dl-pdf" href="${r.file}" target="_blank" rel="noopener">Tải PDF</a>`
+    : "";
   return `
     <div class="report-row">
       <div class="date">${formatDate(r.date)}</div>
-      <div>
+      <a class="report-row-main" href="${detailHref}">
         <div class="title">${r.title}</div>
         <div class="summary">${r.summary || ""}</div>
+      </a>
+      <div class="report-row-actions">
+        <a class="dl" href="${detailHref}">Xem báo cáo</a>
+        ${pdfLink}
       </div>
-      <a class="dl" href="${r.file}" target="_blank" rel="noopener">Tải PDF</a>
     </div>`;
 }

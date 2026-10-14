@@ -1,20 +1,63 @@
 [
   {
-    "date": "2026-09-15",
-    "title": "Điểm tin thị trường phiên 15/09/2026",
-    "summary": "VN-Index dao động quanh vùng hỗ trợ, dòng tiền ghi nhận tập trung ở nhóm ngân hàng và bất động sản khu công nghiệp.",
-    "file": "reports/2026-09-15-diem-tin-thi-truong.pdf"
-  },
-  {
-    "date": "2026-09-12",
-    "title": "Điểm tin thị trường phiên 12/09/2026",
-    "summary": "Thanh khoản cải thiện phiên cuối tuần, khối ngoại ghi nhận mua ròng ở nhóm vốn hoá lớn.",
-    "file": "reports/2026-09-12-diem-tin-thi-truong.pdf"
-  },
-  {
-    "date": "2026-09-11",
-    "title": "Điểm tin thị trường phiên 11/09/2026",
-    "summary": "Thị trường ghi nhận áp lực chốt lời ngắn hạn tại vùng kháng cự.",
-    "file": "reports/2026-09-11-diem-tin-thi-truong.pdf"
+    "date": "2026-10-12",
+    "title": "Điểm tin doanh nghiệp & nhận định thị trường — 12/10/2026",
+    "summary": "VN-Index giữ vùng hỗ trợ quanh 1.730 điểm. VPB, TPB hoàn tất tăng vốn điều lệ; nhóm cổ phiếu ngách bắt đầu xuất hiện tín hiệu giảm mạnh.",
+    "file": null,
+    "companyNews": [
+      {
+        "ticker": "VPB",
+        "text": "Hoàn tất đợt tăng vốn điều lệ lên 100.000 tỷ đồng qua đợt phát hành cổ phiếu trả cổ tức."
+      },
+      {
+        "ticker": "TPB",
+        "text": "Hoàn tất phương án tăng vốn đầu tiên trong 2026, nâng vốn điều lệ lên hơn 31.900 tỷ đồng."
+      },
+      {
+        "ticker": "SHB",
+        "text": "Khẳng định hoạt động ổn định, triển khai tăng vốn đúng quy định, đa dạng hoá nguồn lực tài chính."
+      },
+      {
+        "ticker": "VIX",
+        "text": "Vừa trở thành cổ đông sở hữu trên 1% vốn điều lệ VPBank."
+      },
+      {
+        "ticker": "MCH",
+        "text": "Phiên 09/10, MCH ghi nhận giá trị bán ròng của khối ngoại khoảng 9.594 tỷ đồng, chiếm gần như toàn bộ giá trị bán ròng toàn thị trường."
+      },
+      {
+        "ticker": "DMX",
+        "text": "Sắp xin cổ đông thông qua chương trình trái phiếu kèm chứng quyền dành cho 15 lãnh đạo cấp cao."
+      },
+      {
+        "ticker": "FPT",
+        "text": "Liên tiếp mở rộng mạng lưới toàn cầu, mục tiêu doanh thu tỷ USD tại Nhật Bản trong năm 2027."
+      },
+      {
+        "ticker": "PVT",
+        "text": "PVTrans phủ nhận tàu NV Shunshine bị tấn công tại khu vực biển Hormuz."
+      },
+      {
+        "ticker": "ANV",
+        "text": "Thông báo chi trả cổ tức năm 2025 và tạm ứng cổ tức năm 2026 bằng tiền mặt, tỷ lệ 10%."
+      },
+      {
+        "ticker": "KOS",
+        "text": "Em dâu Chủ tịch muốn mua 8 triệu cổ phiếu KOS khi giá lao dốc 70%."
+      }
+    ],
+    "marketOutlook": [
+      "VN-Index vẫn đang ở vùng hỗ trợ quan trọng quanh 1.730 điểm sau nhiều phiên liên tục thử thách. Những nút thắt từng gây áp lực lớn lên tâm lý nhà đầu tư tại PNJ, NVL và SHB đang dần có dấu hiệu được tháo gỡ phần nào, giúp tâm lý ổn định hơn.",
+      "Những phiên cuối tuần trước, thị trường có nỗ lực **phản kháng** từ hai nhóm Bất động sản và Chứng khoán khi liên tục xuất hiện những nhịp rút chân, cố gắng kéo giá trở lại trong phiên chiều. Tuy nhiên, áp lực bán vẫn tương đối lớn, khiến phần đông cổ phiếu mới chỉ hình thành trạng thái **lưỡng lự** và tranh thủ tạo vùng cân bằng, chưa đủ sức xác nhận một nhịp hồi phục thực sự mạnh mẽ.",
+      "Đáng chú ý, những **cổ phiếu ngách** từng thu hút dòng tiền đầu cơ trong thời gian gần đây đã bắt đầu xuất hiện trạng thái giảm mạnh. Đây sẽ là một trong những tín hiệu và diễn biến đáng để theo dõi trong tuần mới.",
+      "Tuần này còn có **sự kiện đáo hạn phái sinh**, cùng với những thông tin đầu tiên về **kết quả kinh doanh quý 3** bắt đầu hé lộ. Những yếu tố này có thể khiến thị trường xuất hiện các phiên biến động bất ngờ và khó đoán hơn."
+    ],
+    "liveUpdates": [
+      "Thị trường giảm 11 điểm thì VIC và VHM lấy lại hơn 11 điểm, các trụ khác giữ cân bằng.",
+      "Thanh khoản ở mức thấp, khoảng 8.000 tỷ đồng; khối ngoại bán ròng 463 tỷ đồng, tập trung tại TCB, PNJ, VIC, VIX, FPT.",
+      "Dòng thép phiên nay bất ngờ nổ thanh khoản, kỳ vọng tạo đáy và lan toả sang các mã liên quan như DTC...",
+      "Thanh khoản hiện vẫn thấp, nhà đầu tư cần đề phòng các dòng chỉ 'nổ' được một phiên rồi quay đầu giảm 3-4 phiên sau đó — đây là diễn biến khá bình thường trong giai đoạn này.",
+      "Hiện tại chỉ có một dòng thực sự đồng pha, duy trì được dòng tiền: Bán lẻ và Kho bãi - Vận tải."
+    ]
   }
 ]

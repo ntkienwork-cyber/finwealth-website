@@ -40,6 +40,14 @@
   }
   .admin-list-row button:hover { background: #FBEAEA; }
   .admin-locked { text-align: center; padding: 60px 24px; }
+  .admin-hint { font-size: 12.5px; color: var(--gray); margin-top: 6px; line-height: 1.5; }
+  .news-row { display: grid; grid-template-columns: 90px 1fr auto; gap: 10px; margin-bottom: 10px; align-items: start; }
+  .news-row input[type=text] { width: 100%; font-family: var(--font-sans); font-size: 14px; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius); }
+  .news-row button { font-size: 12px; font-weight: 600; color: #a33; background: none; border: 1px solid #eecccc; border-radius: var(--radius); padding: 0 10px; cursor: pointer; height: 38px; }
+  .news-row button:hover { background: #FBEAEA; }
+  .btn-add-row { font-size: 13px; font-weight: 600; color: var(--emerald); background: none; border: 1px dashed var(--sage); border-radius: var(--radius); padding: 8px 14px; cursor: pointer; }
+  .btn-add-row:hover { background: rgba(127,165,145,0.12); }
+  .admin-section-label { font-size: 12.5px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.06em; margin: 28px 0 12px; }
 </style>
 </head>
 <body>
@@ -95,11 +103,30 @@
           <label for="summary">Tóm tắt ngắn (1-2 câu)</label>
           <textarea id="summary" placeholder="Tóm tắt nội dung chính của báo cáo..."></textarea>
         </div>
+
+        <div class="admin-section-label">A. Tin tức doanh nghiệp</div>
+        <div id="newsRows"></div>
+        <button type="button" class="btn-add-row" id="addNewsRow">+ Thêm tin</button>
+
+        <div class="admin-section-label">B. Nhận định thị trường</div>
         <div class="admin-field">
-          <label for="file">File PDF (tối đa ~3MB)</label>
-          <input type="file" id="file" accept="application/pdf" required>
+          <label for="outlook">Mỗi đoạn cách nhau bằng 1 dòng trống</label>
+          <textarea id="outlook" style="min-height:160px;" placeholder="VN-Index vẫn đang ở vùng hỗ trợ quan trọng quanh 1.730 điểm...&#10;&#10;Những phiên cuối tuần trước, thị trường có nỗ lực **phản kháng** từ hai nhóm Bất động sản và Chứng khoán..."></textarea>
+          <p class="admin-hint">Đặt từ khoá cần in đậm trong cặp dấu ** — ví dụ **phản kháng** sẽ hiển thị đậm, màu nhấn trên trang báo cáo.</p>
         </div>
-        <button type="submit" class="btn btn-primary" id="submitBtn">Tải lên</button>
+
+        <div class="admin-section-label">Cập nhật trong phiên (không bắt buộc)</div>
+        <div class="admin-field">
+          <label for="liveUpdates">Mỗi dòng là một cập nhật</label>
+          <textarea id="liveUpdates" style="min-height:120px;" placeholder="Thị trường giảm 11 điểm thì VIC và VHM lấy lại hơn 11 điểm...&#10;Thanh khoản ở mức thấp, khoảng 8.000 tỷ đồng..."></textarea>
+        </div>
+
+        <div class="admin-section-label">File PDF đầy đủ (không bắt buộc)</div>
+        <div class="admin-field">
+          <label for="file">File PDF (tối đa ~3MB) — nếu có, sẽ hiện nút "Tải PDF đầy đủ" trên trang báo cáo</label>
+          <input type="file" id="file" accept="application/pdf">
+        </div>
+        <button type="submit" class="btn btn-primary" id="submitBtn">Đăng báo cáo</button>
         <p id="uploadMsg" class="admin-msg"></p>
       </form>
     </div>
@@ -145,20 +172,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Enter") document.getElementById("unlockBtn").click();
   });
 
+  document.getElementById("addNewsRow").addEventListener("click", () => addNewsRow());
+  addNewsRow();
+  addNewsRow();
+
   document.getElementById("uploadForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const submitBtn = document.getElementById("submitBtn");
     const msg = document.getElementById("uploadMsg");
     const fileInput = document.getElementById("file");
     const file = fileInput.files[0];
-    if (!file) return;
 
     submitBtn.disabled = true;
-    submitBtn.textContent = "Đang tải lên...";
+    submitBtn.textContent = "Đang đăng...";
     msg.style.display = "none";
 
     try {
-      const fileBase64 = await fileToBase64(file);
+      const fileBase64 = file ? await fileToBase64(file) : null;
       const res = await fetch("/api/upload-report", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -168,6 +198,9 @@ document.addEventListener("DOMContentLoaded", () => {
           title: document.getElementById("title").value,
           summary: document.getElementById("summary").value,
           fileBase64,
+          companyNews: collectNewsRows(),
+          marketOutlook: collectParagraphs(document.getElementById("outlook").value),
+          liveUpdates: collectLines(document.getElementById("liveUpdates").value),
         }),
       });
       const data = await res.json();
@@ -177,6 +210,9 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.textContent = "Đã đăng báo cáo thành công!";
       msg.style.display = "block";
       document.getElementById("uploadForm").reset();
+      document.getElementById("newsRows").innerHTML = "";
+      addNewsRow();
+      addNewsRow();
       renderAdminList(data.reports);
     } catch (err) {
       msg.className = "admin-msg err";
@@ -184,10 +220,45 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.style.display = "block";
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = "Tải lên";
+      submitBtn.textContent = "Đăng báo cáo";
     }
   });
 });
+
+function addNewsRow() {
+  const wrap = document.getElementById("newsRows");
+  const row = document.createElement("div");
+  row.className = "news-row";
+  row.innerHTML = `
+    <input type="text" class="news-ticker" placeholder="Mã CK">
+    <input type="text" class="news-text" placeholder="Nội dung tin...">
+    <button type="button">Xoá</button>`;
+  row.querySelector("button").addEventListener("click", () => row.remove());
+  wrap.appendChild(row);
+}
+
+function collectNewsRows() {
+  return [...document.querySelectorAll("#newsRows .news-row")]
+    .map((row) => ({
+      ticker: row.querySelector(".news-ticker").value.trim().toUpperCase(),
+      text: row.querySelector(".news-text").value.trim(),
+    }))
+    .filter((item) => item.ticker || item.text);
+}
+
+function collectParagraphs(text) {
+  return text
+    .split(/\n\s*\n/)
+    .map((p) => p.replace(/\s+/g, " ").trim())
+    .filter(Boolean);
+}
+
+function collectLines(text) {
+  return text
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean);
+}
 
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
@@ -217,31 +288,59 @@ function renderAdminList(list) {
   const sorted = [...list].sort((a, b) => b.date.localeCompare(a.date));
   el.innerHTML = sorted.map(reportAdminRow).join("");
   el.querySelectorAll("[data-delete]").forEach((btn) => {
-    btn.addEventListener("click", () => deleteReport(btn.dataset.delete));
+    btn.addEventListener("click", () => confirmThenDelete(btn));
   });
+}
+
+// Two-step inline confirm (no native confirm() dialog — unreliable in some
+// embedded/sandboxed browser contexts, e.g. preview iframes).
+function confirmThenDelete(btn) {
+  if (!btn.dataset.confirming) {
+    btn.dataset.confirming = "1";
+    const original = btn.textContent;
+    btn.textContent = "Chắc chắn xoá?";
+    btn.dataset.originalLabel = original;
+    const reset = () => {
+      btn.textContent = btn.dataset.originalLabel;
+      delete btn.dataset.confirming;
+      btn.removeEventListener("blur", reset);
+    };
+    setTimeout(reset, 4000);
+    btn.addEventListener("blur", reset);
+    return;
+  }
+  deleteReport(btn.dataset.delete);
 }
 
 function reportAdminRow(r) {
   const [y, m, d] = r.date.split("-");
+  const parts = [];
+  if (r.companyNews && r.companyNews.length) parts.push(`${r.companyNews.length} tin doanh nghiệp`);
+  if (r.marketOutlook && r.marketOutlook.length) parts.push(`${r.marketOutlook.length} đoạn nhận định`);
+  if (r.liveUpdates && r.liveUpdates.length) parts.push(`${r.liveUpdates.length} cập nhật phiên`);
+  if (r.file) parts.push("có PDF");
   return `
     <div class="admin-list-row">
       <div class="d">${d}/${m}/${y}</div>
       <div>
         <div class="t">${r.title}</div>
         <div class="s">${r.summary || ""}</div>
+        <div class="s">${parts.join(" · ") || "Chưa có nội dung chi tiết"}</div>
       </div>
-      <button data-delete="${encodeURIComponent(r.file)}">Xoá</button>
+      <div style="display:flex; flex-direction:column; gap:6px; align-items:flex-end;">
+        <a href="report.html?d=${encodeURIComponent(r.date)}" target="_blank" style="font-size:13px; font-weight:600; color:var(--emerald);">Xem</a>
+        <button data-delete="${encodeURIComponent(r.date)}">Xoá</button>
+      </div>
     </div>`;
 }
 
-async function deleteReport(encodedFile) {
-  if (!confirm("Xoá báo cáo này?")) return;
-  const file = decodeURIComponent(encodedFile);
+async function deleteReport(encodedDate) {
+  const date = decodeURIComponent(encodedDate);
   try {
     const res = await fetch("/api/delete-report", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password: ADMIN_PASSWORD, file }),
+      body: JSON.stringify({ password: ADMIN_PASSWORD, date }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Lỗi không xác định");
