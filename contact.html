@@ -72,6 +72,9 @@
         </ul>
       </div>
       <form class="contact-form" id="contactForm">
+        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
+        <input type="hidden" name="subject" value="Liên hệ mới từ finwealthvietnam.com">
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
         <div>
           <label for="name">Họ và tên</label>
           <input type="text" id="name" name="name" required>
@@ -88,8 +91,8 @@
           <label for="message">Nội dung</label>
           <textarea id="message" name="message" placeholder="Bạn muốn trao đổi điều gì với Finwealth?"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Gửi thông tin</button>
-        <p class="form-note">* Form này cần được kết nối tới email hoặc CRM trước khi đưa vào sử dụng — xem README.md, mục "Kết nối form liên hệ".</p>
+        <button type="submit" class="btn btn-primary" id="contactSubmitBtn">Gửi thông tin</button>
+        <p id="formMsg" class="form-msg"></p>
       </form>
     </div>
   </div>

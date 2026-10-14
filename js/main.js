@@ -17,12 +17,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const contactForm = document.getElementById("contactForm");
   if (contactForm) {
-    contactForm.addEventListener("submit", (e) => {
+    contactForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      alert(
-        "Cảm ơn bạn! Form liên hệ đang ở chế độ demo — cần kết nối tới email/CRM trước khi dùng thật (xem README.md)."
-      );
-      contactForm.reset();
+      const submitBtn = document.getElementById("contactSubmitBtn");
+      const msg = document.getElementById("formMsg");
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Đang gửi...";
+      msg.className = "form-msg";
+      msg.textContent = "";
+
+      try {
+        const data = Object.fromEntries(new FormData(contactForm));
+        if (data.botcheck) throw new Error("spam"); // honeypot tripped — fail silently as a generic error below
+
+        const res = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(data),
+        });
+        const result = await res.json();
+        if (!result.success) throw new Error(result.message || "Gửi thất bại");
+
+        msg.className = "form-msg ok";
+        msg.textContent = "Cảm ơn bạn! Finwealth đã nhận được thông tin và sẽ phản hồi sớm nhất.";
+        contactForm.reset();
+      } catch (err) {
+        msg.className = "form-msg err";
+        msg.textContent = "Gửi không thành công. Vui lòng thử lại hoặc chat qua Zalo OA.";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Gửi thông tin";
+      }
     });
   }
 

@@ -329,6 +329,9 @@ section { padding: 96px 0; }
 }
 .contact-form textarea { resize: vertical; min-height: 120px; }
 .form-note { font-size: 13px; color: var(--gray); }
+.form-msg { font-size: 14px; padding: 12px 14px; border-radius: var(--radius); display: none; margin: 0; }
+.form-msg.ok { display: block; background: #E6F2EC; color: var(--emerald-dark); }
+.form-msg.err { display: block; background: #FBEAEA; color: #a33; }
 
 /* CTA band */
 .cta-band { background: var(--navy); color: var(--bg); text-align: center; }
